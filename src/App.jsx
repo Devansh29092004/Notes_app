@@ -55,7 +55,4 @@ function App() {
   )
 }
 
-// Call the toast function where appropriate in your component
-toast.success('Paste created successfully!');
-
 export default App

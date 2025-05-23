@@ -17,7 +17,6 @@ export const pasteSlice = createSlice({
            const paste = action.payload;
            state.pastes.push(paste);
            localStorage.setItem('pastes', JSON.stringify(state.pastes));
-           toast("Paste Created Successfully!");
         },
         updateToPastes(state, action) {
           const idx = state.pastes.findIndex(p => p._id === action.payload._id);
