@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToPastes, updateToPastes } from '../redux/pasteSlice';
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const [title, setTitle] = useState('');
@@ -9,27 +10,39 @@ const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pasteId = searchParams.get('pasteId');
   const dispatch = useDispatch();
+  const allPastes = useSelector((state) => state.pastes.pastes);
+
+  useEffect(() => {
+    if (pasteId) {
+      const paste = allPastes.find((p) => p._id === pasteId);
+      if (paste) {
+        setTitle(paste.title);
+        setValue(paste.content);
+      }
+    } else {
+      setTitle('');
+      setValue('');
+    }
+  }, [pasteId, allPastes]);
+
   function createPaste() {
     const paste = {
       title: title,
       content: value,
-      _id: pasteId ||
-        Date.now().toString(36),
+      _id: pasteId || Date.now().toString(36),
       createAt: new Date().toISOString()
     };
 
     if (pasteId) {
       dispatch(updateToPastes(paste));
-
-    }
-    else {
+    } else {
       dispatch(addToPastes(paste));
+      toast.success('Paste created successfully!');
     }
 
     setTitle('');
     setValue('');
     setSearchParams({});
-
   }
 
   return (

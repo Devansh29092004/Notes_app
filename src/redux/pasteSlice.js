@@ -9,6 +9,11 @@ export const pasteSlice = createSlice({
     initialState,
     reducers: {
         addToPastes(state, action) {
+            const exists = state.pastes.some(p => p._id === action.payload._id);
+            if (exists) {
+                toast.error("Paste already exists!");
+                return;
+            }
            const paste = action.payload;
            state.pastes.push(paste);
            localStorage.setItem('pastes', JSON.stringify(state.pastes));
@@ -28,8 +33,8 @@ export const pasteSlice = createSlice({
            toast.success("All pastes removed successfully!");
         },
         removeFromPastes(state, action) {
-          const idToRemove = action.payload;
-          state.pastes = state.pastes.filter(paste => paste._id !== idToRemove);
+          const pasteId = action.payload;
+          state.pastes = state.pastes.filter(paste => paste._id !== pasteId);
           localStorage.setItem('pastes', JSON.stringify(state.pastes));
           toast.success("Paste Removed Successfully!");
         },

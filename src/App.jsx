@@ -5,6 +5,8 @@ import Home from './components/Home';
 import Paste from './components/Paste';
 import ViewPaste from './components/ViewPaste';
 import { RouterProvider } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter(
   [
@@ -33,11 +35,27 @@ const router = createBrowserRouter(
   ]
 );
 function App() {
-
   return (
     <div>
        <RouterProvider router={router}/>
+       <ToastContainer
+         position="top-right"
+         autoClose={3000}
+         hideProgressBar={false}
+         newestOnTop={false}
+         closeOnClick
+         rtl={false}
+         pauseOnFocusLoss
+         draggable
+         pauseOnHover
+         theme="light"
+         icon={true} // ensure icon is enabled
+       />
     </div>
   )
 }
+
+// Call the toast function where appropriate in your component
+toast.success('Paste created successfully!');
+
 export default App
